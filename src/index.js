@@ -33,7 +33,21 @@ function generateDummyRecords() {
   });
 }
 
-createConnection()
+createConnection({
+  type: "postgres",
+
+  // We need add the extra SSL to use heroku on localhost
+  extra: {
+    ssl: true,
+  },
+
+  // Change the next line to use the Heroku postgresql from other environment like localhost, remenber that heroku changes this data periodically for security reasons
+  url:
+    "postgres://rrdgqdkfmlhyrh:e9e82ce628dbd623c5da651cbd65f31e1281d539781d0848d50206daad4e757d@ec2-23-20-20-150.compute-1.amazonaws.com:5432/d7vv081khdggd7",
+
+  entities: ["dist/entity/*.js"],
+  synchronize: true,
+})
   .then(async (connection) => {
     await connection.query("PRAGMA foreign_keys=OFF;");
     await connection.runMigrations();
