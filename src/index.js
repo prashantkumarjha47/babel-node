@@ -3,6 +3,8 @@ import express from "express";
 import { createConnection } from "typeorm";
 import ExplorerService from "./services/Explorer";
 import ExplorerController from "./controllers/ExplorerController";
+import Explorer from "./services/Explorer";
+import Users from "./entity/Users";
 
 const app = express();
 const port = 3000;
@@ -32,7 +34,10 @@ function generateDummyRecords() {
 }
 
 createConnection()
-  .then((connection) => {
+  .then(async (connection) => {
+    await connection.query("PRAGMA foreign_keys=OFF;");
+    await connection.runMigrations();
+    await connection.query("PRAGMA foreign_keys=ON;");
     app.listen(port, handlePostConnectionSetup);
     generateDummyRecords();
   })
