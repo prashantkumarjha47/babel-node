@@ -1,7 +1,11 @@
 {
   "name": "default",
-  "type": "sqlite",
-  "database": "mydb",
+  "type": "postgres",
+  "host": "ec2-23-20-20-150.compute-1.amazonaws.com",
+  "port": 5432,
+  "username": "rrdgqdkfmlhyrh",
+  "password": "e9e82ce628dbd623c5da651cbd65f31e1281d539781d0848d50206daad4e757d",
+  "database": "d7vv081khdggd7",
   "synchronize": true,
   "entities": [
     "dist/entity/*.js"
