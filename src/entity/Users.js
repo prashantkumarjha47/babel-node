@@ -6,7 +6,7 @@ import {
   UpdateDateColumn,
   BaseEntity,
 } from "typeorm";
-// import * as bcrypt from "bcryptjs";
+import bcrypt from "bcrypt";
 
 @Entity()
 export default class Users extends BaseEntity {
@@ -26,11 +26,13 @@ export default class Users extends BaseEntity {
   @Column("date")
   @UpdateDateColumn()
   updatedAt = new Date();
-  //   hashPassword() {
-  //     this.password = bcrypt.hashSync(this.password, 8);
-  //   }
 
-  //   checkIfUnencryptedPasswordIsValid(unencryptedPassword) {
-  //     return bcrypt.compareSync(unencryptedPassword, this.password);
-  //   }
+  async hashPassword() {
+    this.password = await bcrypt.hash(this.password, 10); //salt is by default 10
+  }
+
+  async checkIfUnencryptedPasswordIsValid(unencryptedPassword) {
+    console.log(unencryptedPassword, this.password);
+    return await bcrypt.compare(unencryptedPassword, this.password);
+  }
 }

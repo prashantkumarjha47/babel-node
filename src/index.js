@@ -3,7 +3,8 @@ import express from "express";
 import { createConnection } from "typeorm";
 import ExplorerService from "./services/Explorer";
 import ExplorerController from "./controllers/ExplorerController";
-import Explorer from "./services/Explorer";
+import AuthController from "./controllers/AuthController";
+import UserService from "./services/User";
 import Users from "./entity/Users";
 
 const app = express();
@@ -14,6 +15,7 @@ app.use(express.json());
 
 function handlePostConnectionSetup() {
   //Routes
+  app.use("/auth", AuthController);
   app.use("/explorer", ExplorerController);
 
   console.log("Listening at port " + port);
@@ -31,11 +33,16 @@ function generateDummyRecords() {
   ].map((content) => {
     ExplorerService.save(content);
   });
+
+  // const user = new Users();
+  // user.username = "prashant";
+  // user.password = "prashant";
+  // user.save();
 }
 
 const connectionObject = {
-  type: "postgres",
-  url: process.env.DATABASE_URL || "postgres://root:root@localhost:3306/mydb",
+  type: "mysql",
+  url: process.env.DATABASE_URL || "mysql://root:root@localhost:3306/mydb",
   synchronize: true,
   entities: ["dist/entity/*.js"],
 };

@@ -1,9 +1,10 @@
 import express from "express";
-import ExplorerService from "../services/Explorer";
+import ExplorerService from "../../services/Explorer";
+import { authCheck } from "../../middlewares/Auth";
 
 const router = express.Router();
 
-router.get("/", async (req, res) => {
+router.get("/", authCheck, async (req, res) => {
   const contents = await ExplorerService.getAll();
   res.send(contents);
 });
@@ -48,7 +49,6 @@ router.delete("/:id", async (req, res) => {
       await ExplorerService.delete(id);
       res.send({ message: "Deleted Succefully" });
     } catch (error) {
-      console.log("abc", JSON.stringify(error));
       res.status(400).send({ message: "Deletion Unsuccessful" });
     }
   } else {

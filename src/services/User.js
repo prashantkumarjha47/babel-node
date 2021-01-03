@@ -1,15 +1,22 @@
 import { getConnection } from "typeorm";
-import User from "../entity/Users";
+import Users from "../entity/Users";
 
 class UserService {
-  login({ username, password }) {
+  getByUsername({ username }) {
     return getConnection()
       .createQueryBuilder()
       .select("user")
-      .from(User, "user")
+      .from(Users, "user")
       .where("user.username = :username", { username })
-      .andWhere("user.password = :password", { password })
       .getOne();
+  }
+
+  signup({ username, password }) {
+    const user = new Users();
+    user.username = username;
+    user.password = password;
+
+    user.hashPassword().then(() => user.save());
   }
 }
 
