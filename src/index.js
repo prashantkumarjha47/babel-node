@@ -34,13 +34,11 @@ function generateDummyRecords() {
 }
 
 const connectionObject = {
-  "type": "postgres",
-  "url": process.env.DATABASE_URL || "postgres://root:root@localhost:3306/mydb",
-  "synchronize": true,
-  "entities": [
-    "dist/entity/*.js"
-  ]
-}
+  type: "postgres",
+  url: process.env.DATABASE_URL || "postgres://root:root@localhost:3306/mydb",
+  synchronize: true,
+  entities: ["dist/entity/*.js"],
+};
 
 createConnection(connectionObject)
   .then(async (connection) => {
